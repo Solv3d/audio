@@ -3,181 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Visualizer</title>
+    <title>Code Cipher</title>
     <style>
-        body, html {
-            height: 100%;
+        body {
             margin: 0;
+            padding: 0;
+            background-color: black;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-        }
-        .container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-        }
-        .visualizer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
             overflow: hidden;
         }
-        .btn {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 5px;
+
+        #cipher-container {
+            text-align: center;
         }
-        .controls {
-            position: absolute;
-            bottom: -50px;
+
+        .fade-in-out {
+            color: red;
+            font-size: 100px;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #desperate-text {
+            color: red;
+            font-size: 30px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #message {
+            color: red;
+            font-size: 20px;
+            position: fixed;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            justify-content: center;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #cipher-text {
+            color: red;
+            font-size: 20px;
+            user-select: none; /* Make text unselectable */
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+        }
+
+        #start {
+            color: red;
+            font-size: 30px;
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #win-text {
+            color: red;
+            font-size: 50px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <canvas id="visualizer" class="visualizer"></canvas>
-        <div class="controls">
-            <input type="file" id="audioUpload" accept="audio/*" style="display:none;">
-            <button class="btn" onclick="document.getElementById('audioUpload').click()">Upload Audio</button>
-            <button id="playPauseBtn" class="btn" style="display:none;">Pause</button>
+    <div id="cipher-container">
+        <div id="number-8" class="fade-in-out">8</div>
+        <div id="desperate-text" class="hidden">You're so desperate</div>
+        <div id="message" class="hidden"></div>
+        <div id="cipher-text" class="hidden">
+            ⟟ ⍙⏃⋏⏁⟒⎅ ⌇⍜ ⋔⏃⋏⊬ ⎅⍀⟒⏃⋔⌇ ⏚⎍⏁ ⟟ ⎎⏃⟟⌰⟒⎅ ⟟ ⏁⍀⟟⟒⎅ ⏁⍜ ⏚⟒ ⌇⌿⟒☊⟟⏃⌰ ⏚⎍⏁ ⟟ ⎅⟟⎅ ⋏⍜⏁ ⟟ ⍙⏃⋏⏁⟒⎅ ⏁⍜ ⌇⊑⍜⍙ ⏁⊑⟒⋔ ⟟ ⏁⊑⟒ ⏚⟒⌇⏁ ⏚⎍⏁ ⟟ ☊⏃⋏'⏁ ⟟ ⏁⍀⟟⟒⎅ ⟟ ⏁⍀⟟⟒⎅ ⟟ ⏁⍀⟟⟒⎅ ⟟ ☊⏃⋏⏁ ⟟⋔ ☌⍜⟟⋏☌ ⟟⋏⌇⏃⋏⟒ ⟟ ⍙⏃⋏⏁ ⏁⍜ ⌰⟒⏃⎐⟒ ⏁⊑⟟⌇ ⏚⎍⏁ ⟟ ☊⏃⋏⏁ ⟟ ⏃⋔ ⏃ ⎎⏃⟟⌰⟒⎅ ⎎⍀⟒⏃☍ ⏁⊑⟟⌇ ⟟⌇ ⏁⊑⟒ ⟒⋏⎅ ⍜⎎ ⏁⊑⟒ ⍙⍜⍀⌰⎅ ⟟ ⌇⟒⟒ ⟟⏁ ⟟ ⌇⟒⟒ ⌇⏁⏃⏁⟟☊ ⟟ ⌇⟒⟒ ⟒⎐⟒⍀⊬⏁⊑⟟⋏☌ ⟟ ⏃⋔ ⏃ ⌿⍜⍙⟒⍀⎎⎍⌰⌰ ⎎⍀⟒⏃☍ ⟟ ⍙⟟⌰⌰ ⋔⏃☍⟒ ⌇⎍⍀⟒ ⟒⎐⟒⍀⊬⍜⋏⟒ ⍙⟟⌰⌰ ⍜⏚⟒⊬ ⋔⟒ ⟟ ☊⏃⋏⏁ ⌰⟒⏁ ⟒⎐⟒⍀⊬⍜⋏⟒ ⏁⏃☍⟒ ⏁⊑⟟⌇ ⏃⍙⏃⊬ ⎎⍀⍜⋔ ⋔⟒ ⏁⋏⎍⍜☊ ⟒⊑⏁ ⍀⟒⏁⏁⟒⌰ ⌇⏁⍀⏃⏁⌇ ⊑⏁⟟⍙ by⎎
         </div>
+        <div id="start" class="hidden">START</div>
+        <div id="win-text" class="hidden">34 7<br>You win :(</div>
     </div>
 
     <script>
-        const visualizer = document.getElementById('visualizer');
-        const audioUpload = document.getElementById('audioUpload');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const canvas = visualizer.getContext('2d');
+        document.addEventListener("DOMContentLoaded", function() {
+            const number8 = document.getElementById("number-8");
+            const desperateText = document.getElementById("desperate-text");
+            const cipherText = document.getElementById("cipher-text");
+            const start = document.getElementById("start");
+            const winText = document.getElementById("win-text");
+            const message = document.getElementById("message");
 
-        visualizer.width = visualizer.offsetWidth;
-        visualizer.height = visualizer.offsetHeight;
-
-        let source;
-        let analyser;
-        let isPlaying = false;
-        let animationId;
-
-        function visualize(audioBuffer) {
-            if (source) {
-                source.disconnect();
-            }
-            if (analyser) {
-                analyser.disconnect();
-            }
-
-            source = audioContext.createBufferSource();
-            source.buffer = audioBuffer;
-
-            analyser = audioContext.createAnalyser();
-            analyser.fftSize = 64; // Reduced for fewer "spikes"
-
-            source.connect(analyser);
-            analyser.connect(audioContext.destination);
-
-            source.start();
-            isPlaying = true;
-
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-
-            function draw() {
-                animationId = requestAnimationFrame(draw);
-
-                if (isPlaying) {
-                    analyser.getByteFrequencyData(dataArray);
+            // Messages to display on each click
+            const messages = [
+                "Nothing will happen", // 1st to 8th clicks
+                "Nothing will happen",
+                "Nothing will happen",
+                "Nothing will happen",
+                "Nothing will happen",
+                "Nothing will happen",
+                "Nothing will happen",
+                "Nothing will happen",
+                "STOP STOP",           // 9th click
+                "YOU ARE NOT SMART",   // 10th click
+                "YOU ARE NOT THE SMART HERE STOP", // 11th click
+            ];
+            
+            // After 2 seconds, show the number 8 while background stays black
+            setTimeout(() => {
+                number8.style.opacity = 1;
+            }, 2000);
+            
+            let clickCount = 0;
+            
+            number8.addEventListener("click", () => {
+                if (clickCount < 12) {
+                    message.innerText = messages[clickCount] || "";
+                    message.style.opacity = 1;
+                    message.classList.remove("hidden");
+                    
+                    setTimeout(() => {
+                        message.style.opacity = 0;
+                    }, 1000);
+                    
+                    if (clickCount === 0) {
+                        number8.style.opacity = 0;
+                        setTimeout(() => {
+                            desperateText.classList.remove("hidden");
+                            desperateText.style.opacity = 1;
+                        }, 2000);
+                        
+                        setTimeout(() => {
+                            desperateText.style.opacity = 0;
+                            setTimeout(() => {
+                                desperateText.classList.add("hidden");
+                                number8.style.opacity = 1;
+                            }, 1000);
+                        }, 3000);
+                    }
+                    
+                    if (clickCount === 11) {
+                        setTimeout(() => {
+                            message.classList.add("hidden");
+                            number8.style.opacity = 0;
+                            setTimeout(() => {
+                                cipherText.classList.remove("hidden");
+                                start.classList.remove("hidden");
+                            }, 2000);
+                        }, 1000);
+                    }
+                    
+                    clickCount++;
                 }
-
-                canvas.fillStyle = 'rgba(0, 0, 0, 0.2)';
-                canvas.fillRect(0, 0, visualizer.width, visualizer.height);
-
-                const centerX = visualizer.width / 2;
-                const centerY = visualizer.height / 2;
-                const radius = Math.min(centerX, centerY) - 10;
-                const innerRadius = radius / 4; // Size of the inner circle
-
-                // Draw the inner circle
-                canvas.beginPath();
-                canvas.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
-                canvas.fillStyle = 'rgba(50, 50, 50, 0.8)';
-                canvas.fill();
-
-                for (let i = 0; i < bufferLength; i++) {
-                    const barHeight = isPlaying ? dataArray[i] / 2 : 0;
-                    const radian = (i / bufferLength) * Math.PI * 2 - Math.PI / 2;
-                    const x = centerX + Math.cos(radian) * (radius - barHeight);
-                    const y = centerY + Math.sin(radian) * (radius - barHeight);
-
-                    const gradient = canvas.createLinearGradient(
-                        centerX + Math.cos(radian) * innerRadius,
-                        centerY + Math.sin(radian) * innerRadius,
-                        x, y
-                    );
-                    const hue = i * 360 / bufferLength;
-                    gradient.addColorStop(0, `hsla(${hue}, 100%, 50%, 0.1)`);
-                    gradient.addColorStop(1, `hsla(${hue}, 100%, 50%, 1)`);
-
-                    canvas.beginPath();
-                    canvas.moveTo(
-                        centerX + Math.cos(radian) * innerRadius,
-                        centerY + Math.sin(radian) * innerRadius
-                    );
-                    canvas.lineTo(x, y);
-                    canvas.strokeStyle = gradient;
-                    canvas.lineWidth = 4; // Increased for more visible lines
-                    canvas.stroke();
-
-                    // Add glow effect
-                    canvas.shadowBlur = 15;
-                    canvas.shadowColor = `hsl(${hue}, 100%, 50%)`;
-                }
-
-                canvas.shadowBlur = 0; // Reset shadow blur
-            }
-
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
-            draw();
-            playPauseBtn.style.display = 'inline-block';
-        }
-
-        audioUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const arrayBuffer = e.target.result;
-                audioContext.decodeAudioData(arrayBuffer, visualize);
-            }
-
-            reader.readAsArrayBuffer(file);
-        });
-
-        playPauseBtn.addEventListener('click', function() {
-            if (isPlaying) {
-                audioContext.suspend();
-                isPlaying = false;
-                this.textContent = 'Play';
-            } else {
-                audioContext.resume();
-                isPlaying = true;
-                this.textContent = 'Pause';
-            }
+            });
+            
+            start.addEventListener("click", () => {
+                cipherText.classList.add("hidden");
+                start.classList.add("hidden");
+                winText.classList.remove("hidden");
+            });
         });
     </script>
 </body>
-</html>
+  </html>
