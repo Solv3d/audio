@@ -3,49 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification</title>
+    <title>GitHub Page</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
         }
-        input {
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 10px;
+        #message {
+            opacity: 0;
+            font-size: 24px;
+            transition: opacity 1s;
         }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
+        #decem {
+            position: absolute;
+            bottom: 10px;
+            opacity: 0;
             cursor: pointer;
+            transition: opacity 1s;
+            pointer-events: none; /* Disable clicks initially */
+        }
+        #popup {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 2s;
+        }
+        #patient {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            opacity: 0;
+            transition: opacity 2s;
+        }
+        #question {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            color: red;
+            opacity: 1;
+            transition: opacity 20s;
+        }
+        @keyframes colorCycle {
+            0% { background-color: black; }
+            50% { background-color: red; }
+            100% { background-color: purple; }
+        }
+        .color-cycle {
+            animation: colorCycle 10s linear infinite;
         }
     </style>
 </head>
 <body>
-
-    <h1>Access Restricted Area</h1>
-    <input type="email" id="emailInput" placeholder="Enter your Gmail address" required>
-    <button id="submitEmail">Submit</button>
-
+    <div id="message">uioiyciivnulneojnwlhneqbgofneifunwmwvefupofopt</div>
+    <div id="decem">DECEM</div>
+    <div id="popup">
+        STOP STOP STOP
+    </div>
+    <div id="patient">PATIENT</div>
+    <div id="question">How many numbers did you get?</div>
     <script>
-        const allowedEmail = "your-email@gmail.com"; // Replace with your Gmail
-        const submitButton = document.getElementById('submitEmail');
+        // Fade in PATIENT text when the page loads
+        window.onload = () => {
+            const patient = document.getElementById('patient');
+            patient.style.opacity = 1;
+        };
 
-        submitButton.addEventListener('click', () => {
-            const emailInput = document.getElementById('emailInput').value;
+        // Show the text after 1 minute
+        setTimeout(() => {
+            const message = document.getElementById('message');
+            message.style.opacity = 1;
 
-            if (emailInput === allowedEmail) {
-                alert("Access Granted!");
-                // Redirect to your specified URL
-                window.location.href = "https://giproamazing.github.io/sadasdasdasdasdsad/";
-            } else {
-                alert("Access Denied! You are not allowed to enter.");
-                document.getElementById('emailInput').value = ''; // Clear the input
-            }
+            // Disable clicks on DECEM
+            document.getElementById('decem').style.pointerEvents = 'none';
+
+            // Fade out PATIENT and STOP STOP STOP text to reveal the cipher
+            document.getElementById('patient').style.opacity = 0;
+            const popup = document.getElementById('popup');
+            popup.style.opacity = 0;
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 2000); // Match the fade-out transition duration
+        }, 60000);
+
+        // Fade in DECEM after 10 seconds
+        setTimeout(() => {
+            const decem = document.getElementById('decem');
+            decem.style.opacity = 0.7;
+            decem.style.pointerEvents = 'auto'; // Enable clicks
+        }, 10000);
+
+        // Start background color animation and stop it after 10 seconds
+        setTimeout(() => {
+            document.body.classList.add('color-cycle');
+            setTimeout(() => {
+                document.body.classList.remove('color-cycle');
+                document.body.style.backgroundColor = 'black'; // Set background color to black
+
+                // Hide the cipher text and show the question
+                document.getElementById('message').style.opacity = 0;
+                const question = document.getElementById('question');
+                question.style.display = 'block';
+                question.style.opacity = 1;
+
+                // Fade out the question text over 20 seconds
+                setTimeout(() => {
+                    question.style.opacity = 0;
+                }, 20000);
+            }, 10000);
+        }, 120000);
+
+        // Show popup and fade it in on DECEM click
+        document.getElementById('decem').addEventListener('click', () => {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'block';
+            setTimeout(() => {
+                popup.style.opacity = 1;
+            }, 100);
+
+            // Hide PATIENT text
+            document.getElementById('patient').style.opacity = 0;
         });
     </script>
 </body>
