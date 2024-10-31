@@ -59,11 +59,11 @@
         <div class="equation-box" id="equation-box">Equation will appear here</div>
         <input type="text" id="answer-input" placeholder="Type your answer..." />
         <div class="message" id="message"></div>
-        <div class="progress-text" id="progress-text">0/50 completed</div>
+        <div class="progress-text" id="progress-text">0/20 completed</div>
     </div>
 
     <script>
-        const totalEquations = 50;
+        const totalEquations = 20;
         let completedEquations = parseInt(localStorage.getItem('completedEquations')) || 0; // Load progress tied to name
         let refreshed = sessionStorage.getItem('refreshed');
         
