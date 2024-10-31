@@ -3,166 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Cipher</title>
+    <title>Math Challenge</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
             background-color: black;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            color: white;
+            font-family: Arial, sans-serif;
         }
 
-        #cipher-container {
+        .container {
             text-align: center;
+            padding: 20px;
         }
 
-        .fade-in-out {
-            color: red;
-            font-size: 100px;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
+        .progress-bar {
+            width: 0;
+            height: 30px;
+            background-color: pastelgreen;
+            border: 2px solid grey;
+            transition: width 0.2s;
         }
 
-        .hidden {
+        .equation-box {
+            background-color: grey;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        #answer-input {
+            padding: 10px;
+            width: 200px;
+            background-color: grey;
+            border: none;
+            color: white;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .alert-box {
             display: none;
-        }
-
-        #desperate-text {
-            color: red;
-            font-size: 30px;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-
-        #message {
-            color: red;
-            font-size: 20px;
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-
-        #cipher-text {
-            color: red;
-            font-size: 20px;
-            user-select: none; /* Make text unselectable */
-            white-space: pre-wrap; /* Preserve whitespace and line breaks */
-        }
-
-        #start {
-            color: red;
-            font-size: 30px;
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-        }
-
-        #win-text {
-            color: red;
-            font-size: 50px;
-            text-align: center;
+            background-color: red;
+            padding: 10px;
+            color: white;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <div id="cipher-container">
-        <div id="number-8" class="fade-in-out">8</div>
-        <div id="desperate-text" class="hidden">You're so desperate</div>
-        <div id="message" class="hidden"></div>
-        <div id="cipher-text" class="hidden">
-            ⟟ ⍙⏃⋏⏁⟒⎅ ⌇⍜ ⋔⏃⋏⊬ ⎅⍀⟒⏃⋔⌇ ⏚⎍⏁ ⟟ ⎎⏃⟟⌰⟒⎅ ⟟ ⏁⍀⟟⟒⎅ ⏁⍜ ⏚⟒ ⌇⌿⟒☊⟟⏃⌰ ⏚⎍⏁ ⟟ ⎅⟟⎅ ⋏⍜⏁ ⟟ ⍙⏃⋏⏁⟒⎅ ⏁⍜ ⌇⊑⍜⍙ ⏁⊑⟒⋔ ⟟ ⏁⊑⟒ ⏚⟒⌇⏁ ⏚⎍⏁ ⟟ ☊⏃⋏'⏁ ⟟ ⏁⍀⟟⟒⎅ ⟟ ⏁⍀⟟⟒⎅ ⟟ ⏁⍀⟟⟒⎅ ⟟ ☊⏃⋏⏁ ⟟⋔ ☌⍜⟟⋏☌ ⟟⋏⌇⏃⋏⟒ ⟟ ⍙⏃⋏⏁ ⏁⍜ ⌰⟒⏃⎐⟒ ⏁⊑⟟⌇ ⏚⎍⏁ ⟟ ☊⏃⋏⏁ ⟟ ⏃⋔ ⏃ ⎎⏃⟟⌰⟒⎅ ⎎⍀⟒⏃☍ ⏁⊑⟟⌇ ⟟⌇ ⏁⊑⟒ ⟒⋏⎅ ⍜⎎ ⏁⊑⟒ ⍙⍜⍀⌰⎅ ⟟ ⌇⟒⟒ ⟟⏁ ⟟ ⌇⟒⟒ ⌇⏁⏃⏁⟟☊ ⟟ ⌇⟒⟒ ⟒⎐⟒⍀⊬⏁⊑⟟⋏☌ ⟟ ⏃⋔ ⏃ ⌿⍜⍙⟒⍀⎎⎍⌰⌰ ⎎⍀⟒⏃☍ ⟟ ⍙⟟⌰⌰ ⋔⏃☍⟒ ⌇⎍⍀⟒ ⟒⎐⟒⍀⊬⍜⋏⟒ ⍙⟟⌰⌰ ⍜⏚⟒⊬ ⋔⟒ ⟟ ☊⏃⋏⏁ ⌰⟒⏁ ⟒⎐⟒⍀⊬⍜⋏⟒ ⏁⏃☍⟒ ⏁⊑⟟⌇ ⏃⍙⏃⊬ ⎎⍀⍜⋔ ⋔⟒ ⏁⋏⎍⍜☊ ⟒⊑⏁ ⍀⟒⏁⏁⟒⌰ ⌇⏁⍀⏃⏁⌇ ⊑⏁⟟⍙ by⎎
-        </div>
-        <div id="start" class="hidden">START</div>
-        <div id="win-text" class="hidden">34 7<br>You win :(</div>
+    <div class="container">
+        <div id="refresh-alert" class="alert-box">Because you refreshed, we took 2 points. Please don't refresh again!</div>
+        <div class="progress-bar" id="progress-bar"></div>
+        <div class="equation-box" id="equation-box">Equation will appear here</div>
+        <input type="text" id="answer-input" placeholder="Type your answer..." />
+        <div class="message" id="message"></div>
+        <div class="progress-text" id="progress-text">0/50,000 completed</div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const number8 = document.getElementById("number-8");
-            const desperateText = document.getElementById("desperate-text");
-            const cipherText = document.getElementById("cipher-text");
-            const start = document.getElementById("start");
-            const winText = document.getElementById("win-text");
-            const message = document.getElementById("message");
+        const totalEquations = 50;
+        let completedEquations = parseInt(localStorage.getItem('completedEquations')) || 0; // Load progress tied to name
+        let refreshed = sessionStorage.getItem('refreshed');
+        
+        // Check if refreshed
+        if (refreshed) {
+            completedEquations = Math.max(completedEquations - 2, 0); // Deduct 2 points
+            sessionStorage.removeItem('refreshed');
+            document.getElementById('refresh-alert').style.display = 'block'; // Show alert
+        }
 
-            // Messages to display on each click
-            const messages = [
-                "Nothing will happen", // 1st to 8th clicks
-                "Nothing will happen",
-                "Nothing will happen",
-                "Nothing will happen",
-                "Nothing will happen",
-                "Nothing will happen",
-                "Nothing will happen",
-                "Nothing will happen",
-                "STOP STOP",           // 9th click
-                "YOU ARE NOT SMART",   // 10th click
-                "YOU ARE NOT THE SMART HERE STOP", // 11th click
-            ];
-            
-            // After 2 seconds, show the number 8 while background stays black
-            setTimeout(() => {
-                number8.style.opacity = 1;
-            }, 2000);
-            
-            let clickCount = 0;
-            
-            number8.addEventListener("click", () => {
-                if (clickCount < 12) {
-                    message.innerText = messages[clickCount] || "";
-                    message.style.opacity = 1;
-                    message.classList.remove("hidden");
-                    
-                    setTimeout(() => {
-                        message.style.opacity = 0;
-                    }, 1000);
-                    
-                    if (clickCount === 0) {
-                        number8.style.opacity = 0;
-                        setTimeout(() => {
-                            desperateText.classList.remove("hidden");
-                            desperateText.style.opacity = 1;
-                        }, 2000);
-                        
-                        setTimeout(() => {
-                            desperateText.style.opacity = 0;
-                            setTimeout(() => {
-                                desperateText.classList.add("hidden");
-                                number8.style.opacity = 1;
-                            }, 1000);
-                        }, 3000);
-                    }
-                    
-                    if (clickCount === 11) {
-                        setTimeout(() => {
-                            message.classList.add("hidden");
-                            number8.style.opacity = 0;
-                            setTimeout(() => {
-                                cipherText.classList.remove("hidden");
-                                start.classList.remove("hidden");
-                            }, 2000);
-                        }, 1000);
-                    }
-                    
-                    clickCount++;
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progress-bar');
+            const percentage = (completedEquations / totalEquations) * 100;
+            progressBar.style.width = percentage + '%';
+
+            // Update text to show progress
+            document.getElementById('progress-text').innerText = `${completedEquations}/50,000 completed`;
+
+            // Change progress bar color to yellow when an equation is completed
+            if (completedEquations > 0) {
+                progressBar.style.backgroundColor = 'yellow';
+                setTimeout(() => {
+                    progressBar.style.backgroundColor = 'pastelgreen'; // Change back after a short time
+                }, 500);
+            }
+        }
+
+        function checkAnswer(correctAnswer) {
+            const input = document.getElementById('answer-input');
+            const message = document.getElementById('message');
+
+            if (parseInt(input.value) === correctAnswer) {
+                completedEquations++;
+                localStorage.setItem('completedEquations', completedEquations); // Save progress
+                message.innerText = "Correct! Next equation...";
+                input.value = '';
+                loadNewEquation();
+                updateProgressBar(); // Update progress after incrementing
+            } else {
+                message.innerText = "Try again!";
+            }
+        }
+
+        function generateEquation() {
+            const num1 = Math.floor(Math.random() * 100);
+            const num2 = Math.floor(Math.random() * 100);
+            let equation, answer;
+
+            const rand = Math.random();
+            if (rand < 0.25) {
+                equation = `${num1} + ${num2}`;
+                answer = 1;
+            } else if (rand < 0.5) {
+                equation = `${num1} - ${num2}`;
+                answer = 1;
+            } else if (rand < 0.75) {
+                const num3 = Math.floor(Math.random() * 10) + 1; // Fractions
+                equation = `(${num1}/${num3}) * ${num2}`;
+                answer = 1;
+            } else {
+                equation = `Solve for x: ${num1}x + ${num2} = 0`; // Algebra
+                answer = 1;
+            }
+
+            return { equation, answer };
+        }
+
+        function loadNewEquation() {
+            const { equation, answer } = generateEquation();
+            document.getElementById('equation-box').innerText = equation;
+            document.getElementById('answer-input').onkeydown = function (event) {
+                if (event.key === 'Enter') {
+                    checkAnswer(answer);
                 }
-            });
-            
-            start.addEventListener("click", () => {
-                cipherText.classList.add("hidden");
-                start.classList.add("hidden");
-                winText.classList.remove("hidden");
-            });
-        });
+            };
+        }
+
+        // Track refresh
+        window.onbeforeunload = function () {
+            sessionStorage.setItem('refreshed', true);
+        };
+
+        // Initialize game and load first equation
+        loadNewEquation();
+        updateProgressBar();
     </script>
 </body>
-  </html>
+</html>
