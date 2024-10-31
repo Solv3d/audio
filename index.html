@@ -3,152 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Challenge</title>
+    <title>GitHub Page</title>
     <style>
         body {
+            margin: 0;
+            padding: 0;
             background-color: black;
             color: white;
             font-family: Arial, sans-serif;
-        }
-
-        .container {
             text-align: center;
-            padding: 20px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
         }
-
-        .progress-bar {
-            width: 0;
-            height: 30px;
-            background-color: pastelgreen;
-            border: 2px solid grey;
-            transition: width 0.2s;
+        #message {
+            opacity: 0;
+            font-size: 24px;
+            transition: opacity 1s;
         }
-
-        .equation-box {
-            background-color: grey;
-            padding: 10px;
-            margin: 20px 0;
+        #decem {
+            position: absolute;
+            bottom: 10px;
+            opacity: 0;
+            cursor: pointer;
+            transition: opacity 1s;
+            pointer-events: none; /* Disable clicks initially */
         }
-
-        #answer-input {
-            padding: 10px;
-            width: 200px;
-            background-color: grey;
-            border: none;
-            color: white;
-        }
-
-        .progress-text {
-            margin-top: 10px;
-            font-size: 18px;
-        }
-
-        .alert-box {
+        #popup {
             display: none;
-            background-color: blue;
-            padding: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: black;
             color: white;
-            margin-bottom: 10px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 2s;
+        }
+        #patient {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            opacity: 0;
+            transition: opacity 2s;
+        }
+        #question {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            color: red;
+            opacity: 1;
+            transition: opacity 20s;
+        }
+        @keyframes colorCycle {
+            0% { background-color: black; }
+            50% { background-color: red; }
+            100% { background-color: purple; }
+        }
+        .color-cycle {
+            animation: colorCycle 10s linear infinite;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="refresh-alert" class="alert-box">Because Aasher is the biggest dishwasher, and has awards for Jerking, he took points.</div>
-        <div class="progress-bar" id="progress-bar"></div>
-        <div class="equation-box" id="equation-box">Equation will appear here</div>
-        <input type="text" id="answer-input" placeholder="Type your answer..." />
-        <div class="message" id="message"></div>
-        <div class="progress-text" id="progress-text">0/50 completed</div>
+    <div id="message">uioiyciivnulneojnwlhneqbgofneifunwmwvefupofopt</div>
+    <div id="decem">DECEM</div>
+    <div id="popup">
+        STOP STOP STOP
     </div>
-
+    <div id="patient">PATIENT</div>
+    <div id="question">How many numbers did you get?</div>
     <script>
-        const totalEquations = 50000;
-        let completedEquations = parseInt(localStorage.getItem('completedEquations')) || 0; // Load progress tied to name
-        let refreshed = sessionStorage.getItem('refreshed');
-        
-        // Check if refreshed
-        if (refreshed) {
-            completedEquations = Math.max(completedEquations - 2, 0); // Deduct 2 points
-            sessionStorage.removeItem('refreshed');
-            document.getElementById('refresh-alert').style.display = 'block'; // Show alert
-        }
-
-        function updateProgressBar() {
-            const progressBar = document.getElementById('progress-bar');
-            const percentage = (completedEquations / totalEquations) * 100;
-            progressBar.style.width = percentage + '%';
-
-            // Update text to show progress
-            document.getElementById('progress-text').innerText = `${completedEquations}/50,000 completed`;
-
-            // Change progress bar color to yellow when an equation is completed
-            if (completedEquations > 0) {
-                progressBar.style.backgroundColor = 'yellow';
-                setTimeout(() => {
-                    progressBar.style.backgroundColor = 'pastelgreen'; // Change back after a short time
-                }, 500);
-            }
-        }
-
-        function checkAnswer(correctAnswer) {
-            const input = document.getElementById('answer-input');
-            const message = document.getElementById('message');
-
-            if (parseInt(input.value) === correctAnswer) {
-                completedEquations++;
-                localStorage.setItem('completedEquations', completedEquations); // Save progress
-                message.innerText = "Correct! Next equation...";
-                input.value = '';
-                loadNewEquation();
-                updateProgressBar(); // Update progress after incrementing
-            } else {
-                message.innerText = "You got it wrong dumbo!";
-            }
-        }
-
-        function generateEquation() {
-            const num1 = Math.floor(Math.random() * 100);
-            const num2 = Math.floor(Math.random() * 100);
-            let equation, answer;
-
-            const rand = Math.random();
-            if (rand < 0.25) {
-                equation = `${num1} + ${num2}`;
-                answer = 1;
-            } else if (rand < 0.5) {
-                equation = `${num1} - ${num2}`;
-                answer = 1;
-            } else if (rand < 0.75) {
-                const num3 = Math.floor(Math.random() * 10) + 1; // Fractions
-                equation = `(${num1}/${num3}) * ${num2}`;
-                answer = 1;
-            } else {
-                equation = `Solve for x: ${num1}x + ${num2} = 0`; // Algebra
-                answer = 1;
-            }
-
-            return { equation, answer };
-        }
-
-        function loadNewEquation() {
-            const { equation, answer } = generateEquation();
-            document.getElementById('equation-box').innerText = equation;
-            document.getElementById('answer-input').onkeydown = function (event) {
-                if (event.key === 'Enter') {
-                    checkAnswer(answer);
-                }
-            };
-        }
-
-        // Track refresh
-        window.onbeforeunload = function () {
-            sessionStorage.setItem('refreshed', true);
+        // Fade in PATIENT text when the page loads
+        window.onload = () => {
+            const patient = document.getElementById('patient');
+            patient.style.opacity = 1;
         };
 
-        // Initialize game and load first equation
-        loadNewEquation();
-        updateProgressBar();
+        // Show the text after 1 minute
+        setTimeout(() => {
+            const message = document.getElementById('message');
+            message.style.opacity = 1;
+
+            // Disable clicks on DECEM
+            document.getElementById('decem').style.pointerEvents = 'none';
+
+            // Fade out PATIENT and STOP STOP STOP text to reveal the cipher
+            document.getElementById('patient').style.opacity = 0;
+            const popup = document.getElementById('popup');
+            popup.style.opacity = 0;
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 2000); // Match the fade-out transition duration
+        }, 60000);
+
+        // Fade in DECEM after 10 seconds
+        setTimeout(() => {
+            const decem = document.getElementById('decem');
+            decem.style.opacity = 0.7;
+            decem.style.pointerEvents = 'auto'; // Enable clicks
+        }, 10000);
+
+        // Start background color animation and stop it after 10 seconds
+        setTimeout(() => {
+            document.body.classList.add('color-cycle');
+            setTimeout(() => {
+                document.body.classList.remove('color-cycle');
+                document.body.style.backgroundColor = 'black'; // Set background color to black
+
+                // Hide the cipher text and show the question
+                document.getElementById('message').style.opacity = 0;
+                const question = document.getElementById('question');
+                question.style.display = 'block';
+                question.style.opacity = 1;
+
+                // Fade out the question text over 20 seconds
+                setTimeout(() => {
+                    question.style.opacity = 0;
+                }, 20000);
+            }, 10000);
+        }, 120000);
+
+        // Show popup and fade it in on DECEM click
+        document.getElementById('decem').addEventListener('click', () => {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'block';
+            setTimeout(() => {
+                popup.style.opacity = 1;
+            }, 100);
+
+            // Hide PATIENT text
+            document.getElementById('patient').style.opacity = 0;
+        });
     </script>
 </body>
 </html>
