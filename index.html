@@ -115,17 +115,17 @@
             const rand = Math.random();
             if (rand < 0.25) {
                 equation = `${num1} + ${num2}`;
-                answer = 1;
+                answer = ;
             } else if (rand < 0.5) {
                 equation = `${num1} - ${num2}`;
-                answer = 1;
+                answer = ;
             } else if (rand < 0.75) {
                 const num3 = Math.floor(Math.random() * 10) + 1; // Fractions
                 equation = `(${num1}/${num3}) * ${num2}`;
-                answer = 1;
+                answer = ;
             } else {
                 equation = `Solve for x: ${num1}x + ${num2} = 0`; // Algebra
-                answer = 1;
+                answer = ;
             }
 
             return { equation, answer };
