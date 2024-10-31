@@ -59,11 +59,11 @@
         <div class="equation-box" id="equation-box">Equation will appear here</div>
         <input type="text" id="answer-input" placeholder="Type your answer..." />
         <div class="message" id="message"></div>
-        <div class="progress-text" id="progress-text">0/20 completed</div>
+        <div class="progress-text" id="progress-text">0/50 completed</div>
     </div>
 
     <script>
-        const totalEquations = 20;
+        const totalEquations = 50;
         let completedEquations = parseInt(localStorage.getItem('completedEquations')) || 0; // Load progress tied to name
         let refreshed = sessionStorage.getItem('refreshed');
         
@@ -115,17 +115,17 @@
             const rand = Math.random();
             if (rand < 0.25) {
                 equation = `${num1} + ${num2}`;
-                answer = ;
+                answer = 1;
             } else if (rand < 0.5) {
                 equation = `${num1} - ${num2}`;
-                answer = ;
+                answer = 1;
             } else if (rand < 0.75) {
                 const num3 = Math.floor(Math.random() * 10) + 1; // Fractions
                 equation = `(${num1}/${num3}) * ${num2}`;
-                answer = ;
+                answer = 1;
             } else {
                 equation = `Solve for x: ${num1}x + ${num2} = 0`; // Algebra
-                answer = ;
+                answer = 1;
             }
 
             return { equation, answer };
